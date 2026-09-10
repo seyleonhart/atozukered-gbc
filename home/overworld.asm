@@ -284,6 +284,11 @@ OverworldLoopLessDelay::
 	jr nz, .normalPlayerSpriteAdvancement
 	call DoBikeSpeedup
 .normalPlayerSpriteAdvancement
+	; From PureRGB, if B is pressed the player moves faster
+	ldh a, [hJoyHeld]
+	and PAD_B
+	call nz, DoBikeSpeedup
+
 	call AdvancePlayerSprite
 	ld a, [wWalkCounter]
 	and a
