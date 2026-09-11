@@ -1693,6 +1693,11 @@ _LinkCanceledText::
 	line "canceled."
 	done
 
+_BoyGirlText::	; seynotes: New text, system taken from Yume
+	text "Are you a boy or"
+	line "a girl?"
+	done	
+
 _OakSpeechText1::
 	text "Hello there!"
 	line "Welcome to the"

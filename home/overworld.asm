@@ -284,7 +284,7 @@ OverworldLoopLessDelay::
 	jr nz, .normalPlayerSpriteAdvancement
 	call DoBikeSpeedup
 .normalPlayerSpriteAdvancement
-	; From PureRGB, if B is pressed the player moves faster
+	; seynotes: From PureRGB, if B is pressed the player moves faster
 	ldh a, [hJoyHeld]
 	and PAD_B
 	call nz, DoBikeSpeedup
@@ -1990,25 +1990,44 @@ RunMapScript::
 
 LoadWalkingPlayerSpriteGraphics::
 	ld de, RedSprite
+	; girl conds
+	ld b, BANK(RedSprite)
+	ld a, [wPlayerFlags]
+	bit BIT_PLAYER_GIRL, a
+	jr z, .gotSprite
+	ld de, GreenSprite
+	ld b, BANK(GreenSprite)
+.gotSprite
 	ld hl, vNPCSprites
 	jr LoadPlayerSpriteGraphicsCommon
 
 LoadSurfingPlayerSpriteGraphics::
 	ld de, SeelSprite
+	ld b, BANK(SeelSprite)
 	ld hl, vNPCSprites
 	jr LoadPlayerSpriteGraphicsCommon
 
 LoadBikePlayerSpriteGraphics::
 	ld de, RedBikeSprite
+	; girl conds
+	ld b, BANK(RedBikeSprite)
+	ld a, [wPlayerFlags]
+	bit BIT_PLAYER_GIRL, a
+	jr z, .gotSprite
+	ld de, GreenBikeSprite
+	ld b, BANK(GreenBikeSprite)
+.gotSprite
 	ld hl, vNPCSprites
 
 LoadPlayerSpriteGraphicsCommon::
+	push bc
 	push de
 	push hl
-	lb bc, BANK(RedSprite), $0c
+	ld c, $0c
 	call CopyVideoData
 	pop hl
 	pop de
+	pop bc
 	ld a, $c0
 	add e
 	ld e, a
@@ -2016,7 +2035,7 @@ LoadPlayerSpriteGraphicsCommon::
 	inc d
 .noCarry
 	set 3, h ; add $800 ($80 tiles) to hl (1 << 3 == $8)
-	lb bc, BANK(RedSprite), $0c
+	ld c, $0c
 	jp CopyVideoData
 
 ; function to load data from the map header

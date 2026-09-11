@@ -1795,7 +1795,7 @@ wOptions:: db
 
 wObtainedBadges:: flag_array NUM_BADGES
 
-wUnusedObtainedBadges:: db
+wPlayerFlags:: db ; seynotes: previously wUnusedObtainBadges
 
 wLetterPrintingDelayFlags:: db
 

@@ -34,7 +34,7 @@ DEF START_MONEY EQU $3000
 
 	ld hl, wObtainedBadges
 	ld [hli], a
-	ASSERT wObtainedBadges + 1 == wUnusedObtainedBadges
+	ASSERT wObtainedBadges + 1 == wPlayerFlags ; seynotes: Previously wUnusedObtainedBadges
 	ld [hl], a
 
 	ld hl, wPlayerCoins

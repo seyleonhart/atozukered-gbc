@@ -71,3 +71,8 @@ AgathaSprite::           INCBIN "gfx/sprites/agatha.2bpp"
 BrunoSprite::            INCBIN "gfx/sprites/bruno.2bpp"
 LoreleiSprite::          INCBIN "gfx/sprites/lorelei.2bpp"
 SeelSprite::             INCBIN "gfx/sprites/seel.2bpp"
+
+SECTION "Atozuke Player Sprites", ROMX
+
+GreenBikeSprite:: INCBIN "gfx/sprites/green_bike.2bpp" ;test, hopefully I can expand
+GreenSprite::     INCBIN "gfx/sprites/green.2bpp"

@@ -1,11 +1,27 @@
 ChoosePlayerName:
 	call OakSpeechSlidePicRight
 	ld de, DefaultNamesPlayer
+	
+	; seynotes: choose the appropriate name menu
+	ld de, DefaultNamesPlayer
+	ld a, [wPlayerFlags]
+	bit BIT_PLAYER_GIRL, a
+	jr z, .gotPlayerNames
+	ld de, DefaultNamesPlayerF
+
+.gotPlayerNames
 	call DisplayIntroNameTextBox
 	ld a, [wCurrentMenuItem]
 	and a
 	jr z, .customName
+
+	ld hl, wPlayerFlags
+	bit BIT_PLAYER_GIRL, [hl]
 	ld hl, DefaultNamesPlayerList
+	jr z, .gotPlayerNameList
+	ld hl, DefaultNamesPlayerListF
+
+.gotPlayerNameList
 	call GetDefaultName
 	ld de, wPlayerName
 	call OakSpeechSlidePicLeft
@@ -22,6 +38,13 @@ ChoosePlayerName:
 	call Delay3
 	ld de, RedPicFront
 	ld b, BANK(RedPicFront)
+	;condition for girl protag
+	ld a, [wPlayerFlags]
+	bit BIT_PLAYER_GIRL, a
+	jr z, .gotCustomNamePlayerPic
+	ASSERT BANK(GreenPicFront) == BANK(RedPicFront)
+	ld de, GreenPicFront
+.gotCustomNamePlayerPic
 	call IntroDisplayPicCenteredOrUpperRight
 .done
 	ld hl, YourNameIsText

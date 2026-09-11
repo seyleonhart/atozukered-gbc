@@ -39,6 +39,15 @@ PrepareOakSpeech:
 	ld bc, NAME_LENGTH
 	jp CopyData
 
+; seynotes: Adapted from Yume
+BoyGirlChoice::
+	call SaveScreenTilesToBuffer1
+	ld a, BOY_GIRL_MENU
+	ld [wTwoOptionMenuID], a
+	coord hl, 6, 5
+	ld bc, $0607
+	jp DisplayYesNoChoice
+
 OakSpeech:
 	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySound
@@ -70,6 +79,31 @@ ENDC
 	nop
 	nop
 	nop
+
+; seynotes: Ported and adapted from Yume
+.askGender
+	ld hl, BoyGirlText
+	call PrintText
+	call BoyGirlChoice
+
+	; B is refresh menu instead of defaulting to girl
+	ldh a, [hJoyHeld]
+	and PAD_B
+	jr nz, .askGender
+
+	; 0 = BOY, 1 = GIRL
+	ld hl, wPlayerFlags
+	res BIT_PLAYER_GIRL, [hl]
+
+	ld a, [wCurrentMenuItem]
+	and a
+	jr z, .genderIsSet
+
+	set BIT_PLAYER_GIRL, [hl]
+
+.genderIsSet
+	call ClearScreen
+
 	;ld a, [wStatusFlags6]
 	;bit BIT_DEBUG_MODE, a
 	;jp nz, .skipSpeech
@@ -95,6 +129,13 @@ ENDC
 	call GetRedPalID ; HAX
 	ld de, RedPicFront
 	lb bc, BANK(RedPicFront), $00
+	; addition for girl protag conditions
+	ld a, [wPlayerFlags]
+	bit BIT_PLAYER_GIRL, a
+	jr z, .gotIntroPlayerPic
+	ASSERT BANK(GreenPicFront) == BANK(RedPicFront)
+	ld de, GreenPicFront
+.gotIntroPlayerPic
 	call IntroDisplayPicCenteredOrUpperRight
 	call MovePicLeft
 	ld hl, IntroducePlayerText
@@ -114,6 +155,13 @@ ENDC
 	call GetRedPalID ; HAX
 	ld de, RedPicFront
 	lb bc, BANK(RedPicFront), $00
+	; same as above, condition for girl protag
+	ld a, [wPlayerFlags]
+	bit BIT_PLAYER_GIRL, a
+	jr z, .gotFinalPlayerPic
+	ASSERT BANK(GreenPicFront) == BANK(RedPicFront)
+	ld de, GreenPicFront
+.gotFinalPlayerPic
 	call IntroDisplayPicCenteredOrUpperRight
 	call GBFadeInFromWhite
 	ld a, [wStatusFlags3]
@@ -135,8 +183,16 @@ ENDC
 	ld c, 4
 	call DelayFrames
 	ld de, RedSprite
+	lb bc, BANK(RedSprite), $0C ;flipped with vSprites, according to Yume
+	; girl conds
+	ld a, [wPlayerFlags]
+	bit BIT_PLAYER_GIRL, a
+	jr z, .gotShrinkSprite
+	ld de, GreenSprite
+	ld b, BANK(GreenSprite)
+.gotShrinkSprite
+	ld c, $0c
 	ld hl, vSprites
-	lb bc, BANK(RedSprite), $0C
 	call CopyVideoData
 	ld de, ShrinkPic1
 	lb bc, BANK(ShrinkPic1), $00
@@ -197,6 +253,11 @@ IntroduceRivalText:
 
 OakSpeechText3:
 	text_far _OakSpeechText3
+	text_end
+
+; seynotes: Yeah this is the helper
+BoyGirlText:
+	text_far _BoyGirlText
 	text_end
 
 FadeInIntroPic:

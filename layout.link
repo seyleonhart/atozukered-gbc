@@ -85,6 +85,7 @@ ROMX $A
 	org $7ea9
 	"Battle Engine 4"
 ROMX $B
+	"Atozuke Player Sprites"
 	"Pics 3"
 	org $7b7b
 	"Battle Engine 5"
