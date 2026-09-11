@@ -104,9 +104,11 @@ ENDC
 .genderIsSet
 	call ClearScreen
 
-	;ld a, [wStatusFlags6]
-	;bit BIT_DEBUG_MODE, a
-	;jp nz, .skipSpeech
+	; enable debug mode, these were commented
+	ld a, [wStatusFlags6]
+	bit BIT_DEBUG_MODE, a
+	jp nz, .skipSpeech
+
 	ld de, ProfOakPic
 	lb bc, BANK(ProfOakPic), $00
 	call IntroDisplayPicCenteredOrUpperRight

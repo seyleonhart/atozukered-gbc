@@ -113,6 +113,15 @@ IF DEF(_DEBUG)
 	call DebugSetPokedexEntries
 	SetEvent EVENT_GOT_POKEDEX
 
+	; Toggle events up until Pokédex
+	SetEvent EVENT_FOLLOWED_OAK_INTO_LAB
+	SetEvent EVENT_FOLLOWED_OAK_INTO_LAB_2
+	SetEvent EVENT_GOT_STARTER
+	SetEvent EVENT_BATTLED_RIVAL_IN_OAKS_LAB
+	SetEvent EVENT_OAK_GOT_PARCEL
+	ld hl, wStatusFlags4
+	set BIT_GOT_STARTER, [hl]
+
 	; Rival chose Squirtle,
 	; Player chose Charmander.
 	ld hl, wRivalStarter
@@ -137,6 +146,9 @@ DebugSetPokedexEntries:
 
 DebugNewGameItemsList:
 	db BICYCLE, 1
+	db OLD_ROD, 1
+	db GOOD_ROD, 1
+	db SUPER_ROD, 1
 	db FULL_RESTORE, 99
 	db FULL_HEAL, 99
 	db ESCAPE_ROPE, 99

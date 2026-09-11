@@ -190,7 +190,7 @@ HoFLoadPlayerPics:
 	call CopyData
 	ld de, vFrontPic
 	call InterlaceMergeSpriteBuffers
-	call LoadGenderedPlayerFrontPic
+	call LoadGenderedPlayerBackPic
 
 IF GEN_2_GRAPHICS ; Use uncompressed red sprite
 	ld a, $66

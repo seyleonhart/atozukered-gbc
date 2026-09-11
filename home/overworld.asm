@@ -279,16 +279,21 @@ OverworldLoopLessDelay::
 	ld a, [wWalkBikeSurfState]
 	dec a ; riding a bike?
 	jr nz, .normalPlayerSpriteAdvancement
+
+	; Keep the bike's existing 2x movement behavior so it won't glitch
 	ld a, [wMovementFlags]
 	bit BIT_LEDGE_OR_FISHING, a
-	jr nz, .normalPlayerSpriteAdvancement
+	jr nz, .advancePlayerSprite
 	call DoBikeSpeedup
+	jr .advancePlayerSprite
+
 .normalPlayerSpriteAdvancement
-	; seynotes: From PureRGB, if B is pressed the player moves faster
+	; Holding B makes walking and surfing 2x speed
 	ldh a, [hJoyHeld]
 	and PAD_B
 	call nz, DoBikeSpeedup
 
+.advancePlayerSprite
 	call AdvancePlayerSprite
 	ld a, [wWalkCounter]
 	and a
