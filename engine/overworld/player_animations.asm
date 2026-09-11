@@ -380,13 +380,7 @@ FishingAnim:
 	call DelayFrames
 	ld hl, wMovementFlags
 	set BIT_LEDGE_OR_FISHING, [hl]
-	ld de, RedSprite
-	ld hl, vNPCSprites tile $00
-	lb bc, BANK(RedSprite), 12
-	call CopyVideoData
-	ld a, $4
-	ld hl, RedFishingTiles
-	call LoadAnimSpriteGfx
+	call LoadGenderedFishingGraphics ;seynotes: new function
 	ld a, [wSpritePlayerStateData1ImageIndex]
 	ld c, a
 	ld b, $0

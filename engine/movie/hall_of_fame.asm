@@ -183,18 +183,14 @@ HoFMonInfoText:
 	next "TYPE2/@"
 
 HoFLoadPlayerPics:
-	ld de, RedPicFront
-	ld a, BANK(RedPicFront)
-	call UncompressSpriteFromDE
+	call LoadGenderedPlayerFrontPic
 	ld hl, sSpriteBuffer1
 	ld de, sSpriteBuffer0
 	ld bc, 2 * SPRITEBUFFERSIZE
 	call CopyData
 	ld de, vFrontPic
 	call InterlaceMergeSpriteBuffers
-	ld de, RedPicBack
-	ld a, BANK(RedPicBack)
-	call UncompressSpriteFromDE
+	call LoadGenderedPlayerFrontPic
 
 IF GEN_2_GRAPHICS ; Use uncompressed red sprite
 	ld a, $66

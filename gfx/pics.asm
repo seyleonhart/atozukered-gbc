@@ -133,7 +133,12 @@ ENDC
 SECTION "Pics 3", ROMX
 
 ; Removed 'mon sprites from here
-
+; Atozuke player graphics are here
+IF GEN_2_GRAPHICS
+GreenPicBack:: INCBIN "gfx/gstrainers/greenb.pic"
+ELSE
+GreenPicBack:: INCBIN "gfx/player/greenb.pic" ;Just because
+ENDC
 
 SECTION "Pics 4", ROMX
 

@@ -74,5 +74,8 @@ SeelSprite::             INCBIN "gfx/sprites/seel.2bpp"
 
 SECTION "Atozuke Player Sprites", ROMX
 
-GreenBikeSprite:: INCBIN "gfx/sprites/green_bike.2bpp" ;test, hopefully I can expand
+GreenBikeSprite:: INCBIN "gfx/sprites/green_bike.2bpp" ; New section because putting in NPC is too crowded for the bank
 GreenSprite::     INCBIN "gfx/sprites/green.2bpp"
+GreenFishingTilesFront:: INCBIN "gfx/overworld/green_fish_front.2bpp"
+GreenFishingTilesBack::  INCBIN "gfx/overworld/green_fish_back.2bpp"
+GreenFishingTilesSide::  INCBIN "gfx/overworld/green_fish_side.2bpp"
