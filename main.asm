@@ -365,6 +365,10 @@ INCLUDE "color/color.asm"
 SECTION "Atozuke bank1C Extension", ROMX
 INCLUDE "engine/overworld/player_gender.asm"
 
+IF DEF(_DEBUG)
+INCLUDE "engine/debug/debug_hall_of_fame.asm"
+ENDC
+
 SECTION "Itemfinder 1", ROMX
 
 INCLUDE "engine/movie/credits.asm"

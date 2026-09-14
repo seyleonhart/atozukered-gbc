@@ -77,19 +77,20 @@ AnimateHallOfFame:
 	ld bc, HOF_MON
 	call AddNTimes
 	ld [hl], $ff
+
+IF DEF(_DEBUG)
+	; A direct Hall of Fame debug test should exercise the real
+	; presentation without writing a test team into SRAM.
+	ld hl, wStatusFlags6
+	bit BIT_DEBUG_MODE, [hl]
+	jr nz, .skipSaveHallOfFameTeams
+ENDC
+
 	call SaveHallOfFameTeams
+
+.skipSaveHallOfFameTeams
 	xor a
 	ld [wHoFMonSpecies], a
-	inc a
-	ld [wHoFMonOrPlayer], a ; player
-	call HoFShowMonOrPlayer
-	call HoFDisplayPlayerStats
-	call HoFFadeOutScreenAndMusic
-	xor a
-	ldh [hWY], a
-	ld hl, rLCDC
-	res B_LCDC_BG_MAP, [hl]
-	ret
 
 HallOfFameText:
 	db "HALL OF FAME@"

@@ -20,7 +20,7 @@ IF DEF(_DEBUG)
 	call RunDefaultPaletteCommand
 
 	hlcoord 5, 6
-	ld b, 3
+	ld b, 5 ;expand from 3 to get 4 debug slots
 	ld c, 9
 	call TextBoxBorder
 
@@ -35,7 +35,7 @@ IF DEF(_DEBUG)
 	ld [wMenuWatchedKeys], a
 	xor a
 	ld [wMenuJoypadPollCount], a
-	inc a
+	ld a, 3
 	ld [wMaxMenuItem], a
 	ld a, 7
 	ld [wTopMenuItemY], a
@@ -54,7 +54,21 @@ IF DEF(_DEBUG)
 	and a ; FIGHT?
 	jp z, TestBattle
 
-	; DEBUG
+	cp 1 ; DEBUG?
+	jr z, .startDebug
+
+	cp 2 ; HOF BOY?
+	jr z, .hallOfFameBoy
+
+	; HOF GIRL
+	farcall DebugHallOfFameGirl
+	jp DebugMenu
+
+.hallOfFameBoy
+	farcall DebugHallOfFameBoy
+	jp DebugMenu
+
+.startDebug
 	ld hl, wStatusFlags6
 	set BIT_DEBUG_MODE, [hl]
 	jp StartNewGameDebug
@@ -67,7 +81,9 @@ DebugBattleRivalName:
 
 DebugMenuOptions:
 	db   "FIGHT"
-	next "DEBUG@"
+	next "DEBUG"
+	next "HOF BOY"
+	next "HOF GIRL@"
 ELSE
 	ret
 ENDC
