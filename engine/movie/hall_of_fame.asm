@@ -92,6 +92,22 @@ ENDC
 	xor a
 	ld [wHoFMonSpecies], a
 
+	; Switch from the party display to the player display
+	inc a
+	ld [wHoFMonOrPlayer], a ; player
+	call HoFShowMonOrPlayer
+
+	; Show the player's name, play time, money, and Pokedex rating
+	call HoFDisplayPlayerStats
+
+	; Finish the Hall of Fame presentation normally
+	call HoFFadeOutScreenAndMusic
+	xor a
+	ldh [hWY], a
+	ld hl, rLCDC
+	res B_LCDC_BG_MAP, [hl]
+	ret
+
 HallOfFameText:
 	db "HALL OF FAME@"
 
@@ -191,9 +207,10 @@ HoFLoadPlayerPics:
 	call CopyData
 	ld de, vFrontPic
 	call InterlaceMergeSpriteBuffers
+
 	call LoadGenderedPlayerBackPic
 
-IF GEN_2_GRAPHICS ; Use uncompressed red sprite
+IF GEN_2_GRAPHICS
 	ld a, $66
 	ld c, a
 	ld de, vBackPic

@@ -18,9 +18,10 @@ IF DEF(_DEBUG)
 	call LoadHpBarAndStatusTilePatterns
 	call ClearSprites
 	call RunDefaultPaletteCommand
+	call GBPalNormal
 
 	hlcoord 5, 6
-	ld b, 5 ;expand from 3 to get 4 debug slots
+	ld b, 7 ;expand from 3 to get 4 debug slots
 	ld c, 9
 	call TextBoxBorder
 
